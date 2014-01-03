@@ -1,3 +1,8 @@
+### Information
+
+I forked the original repo of : [aaronjensen](https://github.com/aaronjensen/vimfiles)
+There is only a few changes, thank him for that great simple configuration!
+
 ### Installation
 
 `git clone git://github.com/elbouillon/vimfiles.git ~/.vim && ~/.vim/setup.sh`
