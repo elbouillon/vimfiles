@@ -4,7 +4,7 @@ if has("gui_macvim") && has("gui_running")
 
   " Command-T for CtrlP
   macmenu &File.New\ Tab key=<D-T>
-  "map <D-t> :CtrlP<CR>
+  map <D-t> :CtrlP<CR>
   "map <D-t> :let g:ctrlp_default_input = 0<cr>:CtrlP<cr>
   "map <Leader><D-t> :let g:ctrlp_default_input = 0<cr>:CtrlPClearCache<cr>:CtrlP<cr>
   "imap <D-t> <Esc>:let g:ctrlp_default_input = 0<cr>:CtrlP<cr>

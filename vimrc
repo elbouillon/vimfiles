@@ -79,8 +79,9 @@ Bundle 'tomtom/tcomment_vim'
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " My bundle config
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-Bundle 'skalnik/vim-vroom'
 Bundle 'Townk/vim-autoclose'
+Bundle 'scrooloose/nerdtree'
+map <C-n> :NERDTreeToggle<CR>
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Ctrl-P
@@ -108,7 +109,7 @@ map <leader>jm :let g:ctrlp_default_input = 'app/models/'<cr>:CtrlP<cr>
 map <leader>jh :let g:ctrlp_default_input = 'app/helpers/'<cr>:CtrlP<cr>
 map <leader>jl :let g:ctrlp_default_input = 'lib'<cr>:CtrlP<cr>
 map <leader>jp :let g:ctrlp_default_input = 'public'<cr>:CtrlP<cr>
-map <leader>js :let g:ctrlp_default_input = 'app/stylesheets/'<cr>:CtrlP<cr>
+map <leader>jss :let g:ctrlp_default_input = 'app/stylesheets/'<cr>:CtrlP<cr>
 map <leader>jj :let g:ctrlp_default_input = 'app/javascripts/'<cr>:CtrlP<cr>
 map <leader>jf :let g:ctrlp_default_input = 'features/'<cr>:CtrlP<cr>
 map <leader>js :let g:ctrlp_default_input = 'spec/'<cr>:CtrlP<cr>
@@ -216,6 +217,8 @@ let g:vroom_map_keys = 0
 let g:vroom_write_all = 1
 let g:vroom_use_zeus = 1
 let g:vroom_use_bundle_exec = 1
+let g:vroom_cucumber_path = 'cucumber'
+let g:vroom_use_colors = 0
 map <leader>t :VroomRunTestFile<cr>
 map <leader>T :VroomRunNearestTest<cr>
 autocmd BufNewFile,BufRead *_spec.coffee map <buffer> <leader>t :w<cr>:!zeus teaspoon %<cr>
@@ -269,7 +272,7 @@ Bundle 'tpope/vim-haml'
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Vim runtime files for Slim
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-Bundle 'slim-template/vim-slim'
+" Bundle 'slim-template/vim-slim'
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Vim Markdown runtime files
@@ -279,7 +282,7 @@ Bundle 'tpope/vim-markdown'
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " vim handlebars runtime files
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-Bundle 'nono/vim-handlebars'
+" Bundle 'nono/vim-handlebars'
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Syntax for jquery keywords and selectors
@@ -414,6 +417,10 @@ vmap <Leader>t :call I18nTranslateString()<CR>
 " Syntax highlighting for emblem
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 Bundle 'heartsentwined/vim-emblem'
+
+Bundle 'rizzatti/dash.vim'
+Bundle "mattn/emmet-vim"
+Bundle 'digitaltoad/vim-jade'
 
 :runtime macros/matchit.vim
 
@@ -739,4 +746,8 @@ let g:rails_projections = {
   \  "alternate": "app/assets/javascripts/%s.coffee",
   \},
 \}
+
+
+
+:vmap <leader>h :!/Users/mkurmann/.rvm/bin/vim_html2haml<cr>
 
