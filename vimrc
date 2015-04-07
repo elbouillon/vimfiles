@@ -112,6 +112,7 @@ map <leader>jp :let g:ctrlp_default_input = 'public'<cr>:CtrlP<cr>
 map <leader>jss :let g:ctrlp_default_input = 'app/stylesheets/'<cr>:CtrlP<cr>
 map <leader>jj :let g:ctrlp_default_input = 'app/javascripts/'<cr>:CtrlP<cr>
 map <leader>jf :let g:ctrlp_default_input = 'features/'<cr>:CtrlP<cr>
+map <leader>jff :let g:ctrlp_default_input = 'factories/'<cr>:CtrlP<cr>
 map <leader>js :let g:ctrlp_default_input = 'spec/'<cr>:CtrlP<cr>
 map <leader>ja :let g:ctrlp_default_input = 'spec/acceptance/'<cr>:CtrlP<cr>
 map <leader>f :let g:ctrlp_default_input = 0<cr>:CtrlP<cr>
@@ -308,7 +309,8 @@ Bundle 'ap/vim-css-color'
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " My favorite dark color scheme
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-Bundle 'mrtazz/molokai.vim'
+" Bundle 'mrtazz/molokai.vim'
+Bundle 'altercation/vim-colors-solarized'
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Decent light color scheme
@@ -422,7 +424,9 @@ Bundle 'rizzatti/dash.vim'
 Bundle "mattn/emmet-vim"
 Bundle 'digitaltoad/vim-jade'
 
-:runtime macros/matchit.vim
+Bundle 'slim-template/vim-slim.git'
+
+runtime macros/matchit.vim
 
 filetype plugin indent on
 
@@ -466,7 +470,9 @@ set wildignore+=bundler_stubs,build,error_pages,bundle,build,error_pages
 set laststatus=2
 
 set t_Co=256
-color molokai
+" color molokai
+set background=dark
+colorscheme solarized
 
 " Show (partial) command in the status line
 set showcmd
@@ -482,6 +488,7 @@ set modelines=10
 " CTags
 map <Leader>rt :!ctags --extra=+f -R *<CR><CR>
 map <C-\> :tnext<CR>
+nnoremap <leader>. :CtrlPTag<cr>
 
 " Remember last location in file
 if has("autocmd")
@@ -687,8 +694,10 @@ autocmd FileType help exe QuitWithQ()
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 if exists('$ITERM_PROFILE')
   if exists('$TMUX')
-    let &t_SI = "\<Esc>[3 q"
-    let &t_EI = "\<Esc>[0 q"
+    let &t_SI = "\<Esc>Ptmux;\<Esc>\<Esc>]50;CursorShape=1\x7\<Esc>\\"
+    let &t_EI = "\<Esc>Ptmux;\<Esc>\<Esc>]50;CursorShape=0\x7\<Esc>\\"
+    " let &t_SI = "\<Esc>[3 q"
+    " let &t_EI = "\<Esc>[0 q"
   else
     let &t_SI = "\<Esc>]50;CursorShape=1\x7"
     let &t_EI = "\<Esc>]50;CursorShape=0\x7"
@@ -751,3 +760,69 @@ let g:rails_projections = {
 
 :vmap <leader>h :!/Users/mkurmann/.rvm/bin/vim_html2haml<cr>
 
+
+" https://raw.githubusercontent.com/DouglasRoyds/vimrc/master/plugin/qfdo.vim
+" .vim/plugin/qfdo.vim
+" Run a command on each line in the Quickfix buffer.
+" Qfdo! uses the location list instead.
+" Author: Christian Brabandt
+" Author: Douglas
+" See: http://vim.1045645.n5.nabble.com/execute-command-in-vim-grep-results-td3236900.html
+" See: http://efiquest.org/2009-02-19/32/
+" Usage:
+"     :Qfdo s#this#that#
+"     :Qfdo! s#this#that#
+"     :Qfdofile %s#this#that#
+"     :Qfdofile! %s#this#that#
+
+" Christian Brabandt runs the command on each *file*
+" I have mapped Qfdo to line-by-line below
+function! QFDo(bang, command)
+   let qflist={}
+   if a:bang
+      let tlist=map(getloclist(0), 'get(v:val, ''bufnr'')')
+   else
+      let tlist=map(getqflist(), 'get(v:val, ''bufnr'')')
+   endif
+   if empty(tlist)
+      echomsg "Empty Quickfixlist. Aborting"
+      return
+   endif
+   for nr in tlist
+      let item=fnameescape(bufname(nr))
+      if !get(qflist, item,0)
+            let qflist[item]=1
+      endif
+   endfor
+   execute 'argl ' .join(keys(qflist))
+   execute 'argdo ' . a:command
+endfunction
+
+" Run the command on each *line* in the Quickfix buffer (or location list)
+" My own crack at it, based on Pavel Shevaev on efiquest
+function! QFDo_each_line(bang, command)
+   try
+      if a:bang
+         silent lrewind
+      else
+         silent crewind
+      endif
+      while 1
+         echo bufname("%") line(".")
+         execute a:command
+         if a:bang
+            silent lnext
+         else
+            silent cnext
+         endif
+      endwhile
+   catch /^Vim\%((\a\+)\)\=:E\%(553\|42\):/
+   endtry
+endfunction
+
+command! -nargs=1 -bang Qfdo :call QFDo_each_line(<bang>0,<q-args>)
+command! -nargs=1 -bang Qfdofile :call QFDo(<bang>0,<q-args>)
+
+" save with ,s
+map <leader>s :w<cr>
+map <leader>q :x<cr>
